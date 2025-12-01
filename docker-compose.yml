@@ -2,13 +2,11 @@ version: '3.8'
 
 services:
   mongo:
-    image: mongo:latest
-    container_name: mongo
-    restart: always
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
+  image: mongo:latest
+  container_name: mongo
+  restart: always
+  volumes:
+    - mongo-data:/data/db
 
   backend:
     image: syashsingh/mean-backend:latest
