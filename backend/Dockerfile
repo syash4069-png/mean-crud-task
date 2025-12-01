@@ -1,20 +1,20 @@
-# STEP 1 — Use official Node base image
+# backend/Dockerfile
+
 FROM node:18-alpine
 
-# Step 2 — Create working directory inside container
-WORKDIR /app
+# Create app directory
+WORKDIR /usr/src/app
 
-# Step 3 — First copy only package files for caching
+# Install dependencies
 COPY package*.json ./
+RUN npm install --production
 
-# Step 4 — Install dependencies inside container
-RUN npm install
-
-# Step 5 — Copy full backend code
+# Copy source code
 COPY . .
 
-# Step 6 — Expose backend port
+# Environment & port
+ENV PORT=3000
 EXPOSE 3000
 
-# Step 7 — Start the server
+# Start the backend
 CMD ["npm", "start"]
