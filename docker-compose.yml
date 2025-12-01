@@ -1,12 +1,12 @@
-version: '3.8'
+version: "3.8"
 
 services:
   mongo:
-  image: mongo:latest
-  container_name: mongo
-  restart: always
-  volumes:
-    - mongo-data:/data/db
+    image: mongo:latest
+    container_name: mongo
+    restart: always
+    volumes:
+      - mongo-data:/data/db
 
   backend:
     image: syashsingh/mean-backend:latest
@@ -15,7 +15,7 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGO_URL=mongodb://mongo:27017/mean-crud
+      MONGO_URL: mongodb://mongo:27017/mean-crud
     ports:
       - "3000:3000"
 
