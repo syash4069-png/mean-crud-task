@@ -21,7 +21,7 @@ pipeline {
         stage('Build Backend Image') {
             steps {
                 sh """
-                  docker build -t ${DOCKERHUB_BACKEND}:latest ./crud-dd-task-mean-app/backend
+                  docker build -t ${DOCKERHUB_BACKEND}:latest ./mean-crud-task/backend
                 """
             }
         }
@@ -29,7 +29,7 @@ pipeline {
         stage('Build Frontend Image') {
             steps {
                 sh """
-                  docker build -t ${DOCKERHUB_FRONTEND}:latest ./crud-dd-task-mean-app/frontend
+                  docker build -t ${DOCKERHUB_FRONTEND}:latest ./mean-crud-task/frontend
                 """
             }
         }
@@ -53,7 +53,7 @@ pipeline {
                 sshagent(credentials: ['app-ec2-ssh']) {
                     sh """
                       ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} '
-                        cd /opt/mean-app/crud-dd-task-mean-app &&
+                        cd /opt/mean-app/mean-crud-task &&
                         git pull &&
                         sudo docker-compose pull &&
                         sudo docker-compose up -d
