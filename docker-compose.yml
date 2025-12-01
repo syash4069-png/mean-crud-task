@@ -1,32 +1,43 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  backend:
-    image: syashsingh/mean-backend:v1
-    container_name: backend
-    restart: always
-    environment:
-      - MONGO_URL=mongodb://mongo:27017/mean-crud
-    ports:
-      - "3000:3000"
-    depends_on:
-      - mongo
-
-  frontend:
-    image: syashsingh/mean-frontend:v1
-    container_name: frontend
-    restart: always
-    ports:
-      - "4200:80"
-
   mongo:
-    image: mongo:latest
-    container_name: mongo
-    restart: always
+    image: mongo:6
+    container_name: mean-mongo
+    restart: unless-stopped
     ports:
       - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: mean-db
     volumes:
-      - mongo-data:/data/db
+      - mongo_data:/data/db
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: syashsingh/mean-backend:latest
+    container_name: mean-backend
+    restart: unless-stopped
+    environment:
+      MONGO_URI: mongodb://mongo:27017/mean-db
+      PORT: 3000
+    depends_on:
+      - mongo
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: syashsingh/mean-frontend:latest
+    container_name: mean-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "4200:4200"
 
 volumes:
-  mongo-data:
+  mongo_data:
