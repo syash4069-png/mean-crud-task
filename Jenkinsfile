@@ -70,12 +70,14 @@ pipeline {
 
                     echo "Restarting containers on EC2..."
                     sh """
-                        ssh -o StrictHostKeyChecking=no ubuntu@13.204.225.105 \
+                      ssh -o StrictHostKeyChecking=no ubuntu@13.204.225.105 \
 "sudo docker ps -aq --filter 'publish=3000' | xargs -r sudo docker rm -f && \
+ sudo docker ps -aq --filter 'publish=4200' | xargs -r sudo docker rm -f && \
  cd /opt/mean-app && \
  sudo docker-compose down || true && \
  sudo docker-compose pull && \
  sudo docker-compose up -d"
+
 
 
                     """
