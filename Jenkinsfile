@@ -70,11 +70,12 @@ pipeline {
 
                     echo "Restarting containers on EC2..."
                     sh """
-                        ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} '
-                            cd /opt/mean-app &&
-                            sudo docker-compose pull &&
-                            sudo docker-compose up -d
-                        '
+                        ssh -o StrictHostKeyChecking=no ubuntu@13.204.225.105 \
+                         "cd /opt/mean-app && \
+                          sudo docker-compose down || true && \
+                          sudo docker-compose pull && \
+                          sudo docker-compose up -d"
+
                     """
                 }
             }
